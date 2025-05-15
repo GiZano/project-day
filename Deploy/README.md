@@ -2,10 +2,10 @@
 
 ## Contenuto
 In questa cartella, la cui struttura è la seguente: <br><br>
-bemore-dist/
-├── bemore-app-1.0.0-jar-with-dependencies.jar
-├── run.bat
-├── run.sh
+bemore-dist/<br>
+├── bemore-app-1.0.0-jar-with-dependencies.jar<br>
+├── run.bat<br>
+├── run.sh<br>
 └── README.txt <br> <br>
 Si possono trovare:
 <ul>
