@@ -1,3 +1,0 @@
-# Codici del progetto
-
-## To be continued...
