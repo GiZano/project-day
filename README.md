@@ -1,5 +1,5 @@
 # ProjectDay - Company Energetic Efficiency Enhancement System
-### Italian Version below
+### <a href="#Ita">Italian Version below</a>
 
 ## Description
 
@@ -9,12 +9,16 @@ This project increases the energy efficiency of the working environment. Several
 
 The main implemented technologies are:
 <ul>
-    <li>ThingsBoard: center of data management, collection and visualization.</li>
+    <li>ThingsBoard: center of data management, collection and visualization. Discover how to install it here <a href="https://thingsboard.io/docs/user-guide/install/installation-options/" target="_blank">ThingsBoard</a></li>
     <li>Arduino - creation of sensors to collect data and actuators to apply real-time solutions.</li>
     <li>Phantom sensors - creation of demo sensor to make practice with the application.</li>
     <li>AI - data analyzer based on the metric and and the time lapse.</li>
     <li>Graphic User Interface (GUI) - enables to visualize the first technology mentioned, and to connect via console to the analysis process.</li>
 </ul>
+
+## Architecture 
+
+![bE-More architecture](https://github.com/user-attachments/assets/7b5e7096-b4c3-451a-82bb-c95ca022e853)
 
 ## Operation
 
@@ -65,8 +69,7 @@ The main implemented technologies are:
 ![circuit](https://github.com/user-attachments/assets/bca92431-5202-4c54-b24f-d2595b3f0679)
 
 
-
-# ProjectDay - Sistema di EfFicientamento Energetico Aziendale
+# <p id="Ita">ProjectDay - Sistema di EfFicientamento Energetico Aziendale</p>
 
 ## Descrizione
 
@@ -76,12 +79,16 @@ Questo progetto permette di aumentare l'efficienza energetica dell'ambiente di l
 
 Le tecnologie principali utilizzate sono:
 <ul>
-    <li>ThingsBoard - centro di gestione, immagazzinamento e visualizzazione dei dati;</li>
-    <li>Arduino - sensori che raccolgono dati e attuatori che applicano soluzioni in tempo reale;</li>
-    <li>Sensori fantasma - che permettono di creare demo per la visualizzazione e gestione di dati;</li>
-    <li>IA - per analizzare i dati in base alla metrica e ad un lasso di tempo;</li>
+    <li>ThingsBoard - centro di gestione, immagazzinamento e visualizzazione dei dati. Scopri come installarlo qui <a href="https://thingsboard.io/docs/user-guide/install/installation-options/" target="_blank">ThingsBoard</a></li>
+    <li>Arduino - sensori che raccolgono dati e attuatori che applicano soluzioni in tempo reale.</li>
+    <li>Sensori fantasma - che permettono di creare demo per la visualizzazione e gestione di dati.</li>
+    <li>IA - per analizzare i dati in base alla metrica e ad un lasso di tempo.</li>
     <li>Interfaccia grafica - permettendo la visualizzazione della prima citata e di accedere alla console per utilizzare l'IA.</li>
 </ul>
+
+## Architettura
+
+![bE-More architecture_ita](https://github.com/user-attachments/assets/ab109e94-daf4-46e7-b08d-7575b2e39c83)
 
 ## Funzionamento generale
 
