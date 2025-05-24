@@ -14,8 +14,18 @@ unsigned long lastMsg = 0;
 #define MSG_BUFFER_SIZE	(50)
 char msg[MSG_BUFFER_SIZE];
 char vuoto[MSG_BUFFER_SIZE];
+
 int value = 0;
 int analogPIN = A3;
+int ledPin = 5;
+int onPin = 1;
+int autoPin = 2;
+int buzzerPin = 8;
+int autoFlagPin = 0;
+
+bool autoTurn = false;
+bool led = false;
+
 int valLight;
 
 void setup_wifi() {
@@ -86,7 +96,12 @@ void reconnect() {
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);     // Initialize the LED_BUILTIN pin as an output
-  
+  pinMode(ledPin, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(autoFlagPin, OUTPUT);
+  pinMode(onPin, INPUT);
+  pinMode(autoPin, INPUT);
+
   Serial.begin(115200);
   setup_wifi();
   client.setServer(ip, 1883);
@@ -105,8 +120,10 @@ void loop() {
     msg[i] = vuoto[i];
   }
 
+  // reads how much light there is in the room/environment
   valLight = analogRead(analogPIN);
 
+  // creates the message to send via MQTT
   msg[0] = '{';
   msg[1] = 'l';
   msg[2] = 'i';
@@ -122,6 +139,7 @@ void loop() {
 
   msg[7+num.length()] = '}';
 
+  // send the message via MQTT
   unsigned long now = millis();
   if (now - lastMsg > 2000) {
     lastMsg = now;
@@ -130,5 +148,55 @@ void loop() {
     Serial.println(msg);
     client.publish("v1/devices/me/telemetry", msg);
   }
+
+  // if the "Auto" button is pressed, switch auto on/off
+  if(digitalRead(autoPin)){
+    digitalWrite(buzzerPin, HIGH);
+    changeAuto();
+  }
+
+  // if "Led" button is pressed, switch leds on/off
+  if(digitalRead(onPin)){
+    changeLed();
+    if(led){
+      digitalWrite(ledPin, HIGH);
+    }
+    else{
+      digitalWrite(ledPin, LOW);
+    }
+  }
+
+  // if light value is higher than 450 and the auto mode is active, switch the leds off
+  if(valLight > 450 && autoTurn){
+    digitalWrite(ledPin, LOW);
+  }
+
   delay(1000);
+  digitalWrite(buzzerPin, LOW);
+}
+
+void changeAuto(){
+  // switch auto between on and off
+  if(autoTurn){
+    autoTurn = false;
+    digitalWrite(autoFlagPin, LOW);
+    Serial.print("Switch auto off");
+  }
+  else{
+    autoTurn = true;
+    digitalWrite(autoFlagPin, HIGH);
+    Serial.print("Switch auto on");
+  }
+}
+
+void changeLed(){
+  // switch leds between on and off
+  if(led){
+    led = false;
+    Serial.print("Switch led off");
+  }
+  else{
+    led = true;
+    Serial.print("Switch led on");
+  }
 }
