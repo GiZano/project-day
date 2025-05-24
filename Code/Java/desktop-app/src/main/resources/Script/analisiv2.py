@@ -3,12 +3,12 @@ import psycopg2
 from datetime import datetime, timedelta
 import sys
 
-# Thingsboard database configuration
+# Configurazione del database ThingsBoard
 DB_CONFIG = {
     'host': 'localhost',
     'database': 'thingsboard',
     'user': 'postgres',
-    'password': 'yourPassword',
+    'password': 'PostGres153?',
     'port': '5432'
 }
 

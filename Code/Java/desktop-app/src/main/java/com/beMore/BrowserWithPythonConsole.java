@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
@@ -35,7 +34,11 @@ public class BrowserWithPythonConsole {
     private boolean isDarkTheme = false;
     private static int numeroInput;
 
-    // Theme colors
+    /**
+     * Colors of the themes for the application: <br>
+     * gray and white for light theme; <br>
+     * blue navy for dark theme. <br>
+     */
     private final ColorTheme lightTheme = new ColorTheme(
             Color.WHITE, Color.BLACK,
             new Color(240, 240, 240), new Color(220, 220, 220),
@@ -53,7 +56,7 @@ public class BrowserWithPythonConsole {
     private ColorTheme currentTheme = lightTheme;
 
     static {
-        // Inizializzazione early di JavaFX
+        // Early initialization of JavaFX
         System.setProperty("javafx.embed.singleThread", "true");
         new JFXPanel();
     }
@@ -72,31 +75,20 @@ public class BrowserWithPythonConsole {
         });
     }
 
-    private static File extractResourceToTempFile(String resourcePath) throws IOException {
-        InputStream inputStream = BrowserWithPythonConsole.class.getResourceAsStream(resourcePath);
-        if (inputStream == null) {
-            throw new FileNotFoundException("Resource not found: " + resourcePath);
-        }
-
-        // Crea un file temporaneo con estensione corretta
-        String extension = resourcePath.substring(resourcePath.lastIndexOf('.'));
-        File tempFile = File.createTempFile("temp-", extension);
-        tempFile.deleteOnExit();
-
-        Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        return tempFile;
-    }
-
+    /**
+     * Initialize the application
+     * @throws IOException error while accessing the configuration file.
+     */
     private void initialize() throws IOException {
-        // Debug: verifica risorse
-        URL scriptUrl = getClass().getResource("/Script/analisiv2.py");
-        logger.info("Script URL: {}", scriptUrl);
-
         loadConfiguration();
         createAndShowGUI();
         setupShutdownHook();
     }
 
+    /**
+     * Load configurations using the class AppConfig(). If it's impossible to load them from the class, read them from the configuration file.
+     * @throws IOException error while accessing the configuration file.
+     */
     private void loadConfiguration() throws IOException {
         config = new AppConfig();
 
@@ -115,7 +107,7 @@ public class BrowserWithPythonConsole {
             }
         }
 
-        // Se non trova nelle risorse, prova a caricare dal file di configurazione
+        // If not found in resources folder, try to load from configuration file
         try {
             Properties props = new Properties();
             try (InputStream input = new FileInputStream("config.properties")) {
@@ -130,6 +122,9 @@ public class BrowserWithPythonConsole {
         }
     }
 
+    /**
+     * Function to shut down the process even if it's not terminated.
+     */
     private void setupShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (pythonProcess != null && pythonProcess.isAlive()) {
@@ -139,6 +134,9 @@ public class BrowserWithPythonConsole {
         }));
     }
 
+    /**
+     * Create the GUI with the three main components, apply the theme and show it on the screen.
+     */
     private void createAndShowGUI() {
         initializeFrame();
         setupTopPanel();
@@ -148,6 +146,9 @@ public class BrowserWithPythonConsole {
         frame.setVisible(true);
     }
 
+    /**
+     * Initialization of the frame.
+     */
     private void initializeFrame() {
         frame = new JFrame("bE More - I.S. Archimede");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -156,6 +157,9 @@ public class BrowserWithPythonConsole {
         setWindowIcon();
     }
 
+    /**
+     * Set the icon with the one in the resources' folder.
+     */
     private void setWindowIcon() {
         try (InputStream iconStream = getClass().getResourceAsStream("/logo.png")) {
             if (iconStream != null) {
@@ -168,18 +172,21 @@ public class BrowserWithPythonConsole {
         }
     }
 
+    /**
+     * Creation of the top panel with the buttons to open the web browser, change theme and hide/show the console panel.
+     */
     private void setupTopPanel() {
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(new EmptyBorder(3, 3, 3, 3));
 
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
-        leftPanel.add(createButton("Apri browser", e -> openInSystemBrowser()));
+        leftPanel.add(createButton("Apri browser", _ -> openInSystemBrowser()));
 
         JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 0));
-        centerPanel.add(createButton("Tema", e -> toggleTheme()));
+        centerPanel.add(createButton("Tema", _ -> toggleTheme()));
 
         JPanel rightButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 3, 0));
-        toggleConsoleButton = createButton("Nascondi", e -> toggleConsoleVisibility());
+        toggleConsoleButton = createButton("Nascondi", _ -> toggleConsoleVisibility());
         rightButtonPanel.add(toggleConsoleButton);
 
         topPanel.add(leftPanel, BorderLayout.WEST);
@@ -189,6 +196,12 @@ public class BrowserWithPythonConsole {
         frame.add(topPanel, BorderLayout.NORTH);
     }
 
+    /**
+     * Function to create a JButton to put inside the frame.
+     * @param text Text shown on the button
+     * @param action action to listen to for activating the relative function
+     * @return a JButton
+     */
     private JButton createButton(String text, ActionListener action) {
         JButton button = new JButton(text) {
             @Override
@@ -266,12 +279,16 @@ public class BrowserWithPythonConsole {
         });
     }
 
+    /**
+     * Set up the console panel connected to the python process present in the resources folder, used to analyze collected data.
+     * @return JPanel containing the console to control the Python process.
+     */
     private JPanel setupPythonConsole() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setOpaque(true);
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 2));
-        topPanel.add(createButton("Riavvia", e -> restartPythonProcess()));
+        topPanel.add(createButton("Riavvia", _ -> restartPythonProcess()));
         panel.add(topPanel, BorderLayout.NORTH);
 
         outputArea = new JTextArea();
@@ -297,11 +314,18 @@ public class BrowserWithPythonConsole {
         return panel;
     }
 
+    /**
+     * Restart the python process to do a new analysis.
+     */
     private void restartPythonProcess() {
         outputArea.setText("");
         startPythonProcess();
     }
 
+    /**
+     * Function to check if the file containing the python analyzer script exists
+     * @return true/false if the file exists or not.
+     */
     private boolean checkPythonScriptExists() {
         File scriptFile = new File(config.getPythonScript());
         if (!scriptFile.exists()) {
@@ -315,6 +339,9 @@ public class BrowserWithPythonConsole {
         return true;
     }
 
+    /**
+     * Start the python process to receive input from the console and then analyze collected data.
+     */
     private void startPythonProcess() {
         if (!checkPythonScriptExists()) {
             return;
@@ -326,23 +353,21 @@ public class BrowserWithPythonConsole {
 
         try {
             numeroInput = 0;
-            // Ottieni il percorso assoluto della working directory
+            // Get the absolute path of the working directory
             File workingDir = new File("D:\\\\ProgrammiWindows\\\\Ollama");
 
-            // Verifica che la directory esista
+            // Check if directory exists
             if (!workingDir.exists()) {
-                SwingUtilities.invokeLater(() -> {
-                    outputArea.append("ERRORE: Directory di lavoro non trovata: " + workingDir + "\n");
-                });
+                SwingUtilities.invokeLater(() -> outputArea.append("ERRORE: Directory di lavoro non trovata: " + workingDir + "\n"));
                 return;
             }
 
-            // Crea il ProcessBuilder con il percorso completo
+            // Create the ProcessBuilder with the full path
             ProcessBuilder pb = new ProcessBuilder("python", config.getPythonScript());
             pb.directory(workingDir);
             pb.redirectErrorStream(true);
 
-            // Aggiungi variabili d'ambiente se necessario
+            // Add environment variables if needed
             Map<String, String> env = pb.environment();
             env.put("PYTHONPATH", workingDir.getAbsolutePath());
 
@@ -388,16 +413,15 @@ public class BrowserWithPythonConsole {
 
         } catch (IOException e) {
             logger.error("Errore nell'avvio del processo Python", e);
-            SwingUtilities.invokeLater(() -> {
-                outputArea.append("Errore avvio processo: " + e.getMessage() + "\n");
-                /*outputArea.append("Path dello script: " + new File(config.getPythonScript()).getAbsolutePath() + "\n");
-                outputArea.append("Working dir: " + new File(config.getWorkingDir()).getAbsolutePath() + "\n");
-                */
-
-            });
+            SwingUtilities.invokeLater(() -> outputArea.append("Errore avvio processo: " + e.getMessage() + "\n"));
         }
     }
 
+    /**
+     * Skip the line with unreadable characters, which should be the ones showing the analysis is loading.
+     * @param line the line received from the python process.
+     * @return the same line unless it is the 9th line.
+     */
     private String processOutputLine(String line) {
         if(++numeroInput == 9){
             return "";
@@ -405,6 +429,10 @@ public class BrowserWithPythonConsole {
         return line;
     }
 
+    /**
+     * Take the input from the JTextField and send it to the python process in background.
+     * @param e event causing the function to be called.
+     */
     private void sendInputToPython(ActionEvent e) {
         String input = inputField.getText();
         if (input.isEmpty()) return;
@@ -424,17 +452,29 @@ public class BrowserWithPythonConsole {
         }
     }
 
+    /**
+     * Switch between light and dark theme.
+     */
     private void toggleTheme() {
         isDarkTheme = !isDarkTheme;
         currentTheme = isDarkTheme ? darkTheme : lightTheme;
         applyTheme(currentTheme);
     }
 
+    /**
+     * Apply the theme to the frame and call the function to apply it to the components.
+     * @param theme the theme to apply.
+     */
     private void applyTheme(ColorTheme theme) {
         frame.getContentPane().setBackground(theme.bg());
         applyThemeToComponents(frame.getContentPane(), theme);
     }
 
+    /**
+     * Apply the theme to the components of the frame application.
+     * @param component component to apply the theme.
+     * @param theme theme to apply.
+     */
     private void applyThemeToComponents(Component component, ColorTheme theme) {
         if (component instanceof JPanel panel) {
             panel.setBackground(panel.isOpaque() ? theme.panelBg() : theme.bg());
@@ -464,6 +504,10 @@ public class BrowserWithPythonConsole {
         }
     }
 
+    /**
+     * Hide the console if it's being shown. <br>
+     * Show the console if it's being hidden.
+     */
     private void toggleConsoleVisibility() {
         isConsoleVisible = !isConsoleVisible;
         if (isConsoleVisible) {
@@ -477,6 +521,9 @@ public class BrowserWithPythonConsole {
         frame.revalidate();
     }
 
+    /**
+     * Open the client view of ThingsBoard directly on the web browser.
+     */
     private void openInSystemBrowser() {
         try {
             Desktop.getDesktop().browse(new URI(config.getWebUrl()));
@@ -495,6 +542,9 @@ public class BrowserWithPythonConsole {
             Color panelBg
     ) {}
 
+    /**
+     * Class containing the configuration data of the application.
+     */
     private static class AppConfig {
         private String pythonScript;
         private String workingDir;
