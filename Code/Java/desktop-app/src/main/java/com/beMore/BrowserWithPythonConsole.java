@@ -1,22 +1,59 @@
 package com.beMore;
 
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.web.WebView;
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.Properties;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
 
 public class BrowserWithPythonConsole {
     private static final Logger logger = LoggerFactory.getLogger(BrowserWithPythonConsole.class);
@@ -354,7 +391,7 @@ public class BrowserWithPythonConsole {
         try {
             numeroInput = 0;
             // Get the absolute path of the working directory
-            File workingDir = new File("D:\\\\ProgrammiWindows\\\\Ollama");
+            File workingDir = new File("X\\Ollama");
 
             // Check if directory exists
             if (!workingDir.exists()) {
@@ -552,8 +589,8 @@ public class BrowserWithPythonConsole {
 
         public AppConfig() {
             this.pythonScript = "analisiv2.py";
-            this.workingDir = "D:\\ProgrammiWindows\\Ollama";
-            this.webUrl = "http://localhost:8080/";
+            this.workingDir = "X\\Ollama";
+            this.webUrl = "your_thingsboard_server_ip:8080/";
         }
 
         public String getPythonScript() { return pythonScript; }
