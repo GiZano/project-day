@@ -68,6 +68,13 @@ The main implemented technologies are:
 
 ![circuit](https://github.com/user-attachments/assets/bca92431-5202-4c54-b24f-d2595b3f0679)
 
+## Requirements
+
+<ul>
+    <li>Ollama installed.</li>
+    <li>Mistral:7b installed.</li>
+    <li>Java 23.</li>
+</ul>
 
 # <p id="Ita">ProjectDay - Sistema di EfFicientamento Energetico Aziendale</p>
 
@@ -136,4 +143,11 @@ Le tecnologie principali utilizzate sono:
 ## Circuito del Modello Reale
 
 ![circuit](https://github.com/user-attachments/assets/bca92431-5202-4c54-b24f-d2595b3f0679)
+
+## Requirements
+<ul>
+    <li>Ollama installato.</li>
+    <li>Mistral:7b installato.</li>
+    <li>Java 23.</li>
+</ul>
 
