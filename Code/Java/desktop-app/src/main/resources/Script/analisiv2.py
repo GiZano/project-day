@@ -8,7 +8,7 @@ DB_CONFIG = {
     'host': 'localhost',
     'database': 'thingsboard',
     'user': 'postgres',
-    'password': 'PostGres153?',
+    'password': 'yourDatabasePassword',
     'port': '5432'
 }
 
